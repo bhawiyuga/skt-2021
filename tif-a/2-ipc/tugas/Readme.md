@@ -14,3 +14,5 @@ Cara Pengerjaan
 1. Tugas ini dikerjakan secara berkelompok dengan anggota 2 orang
 2. Tugas diselesaikan di Github Classroom dengan link https://classroom.github.com/a/T5ZpDRF2
 3. Semua anggota tim harus berperan dalam coding
+
+tes commit
