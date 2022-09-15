@@ -18,7 +18,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 func main() {
 	// Deklarasikan opsi untuk koneksi dari pub/sub ke broker
 	opts := mqtt.NewClientOptions()
-	opts.AddBroker("tcp://127.0.0.1:1883")
+	opts.AddBroker("tcp://192.168.55.4:1883")
 	// Deklarasikan callback function untuk handling connection
 	opts.OnConnect = connectHandler
 	// Deklarasikan callback function untuk handle message masuk
