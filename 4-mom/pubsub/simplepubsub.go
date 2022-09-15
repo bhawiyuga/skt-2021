@@ -12,7 +12,8 @@ var connectHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
 }
 
 var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	fmt.Println("Terima message dari broker : ", fmt.Sprintf("%s", msg.Payload()), " dengan topik ", msg.Topic())
+	fmt.Println("Terima message dari broker : ", string(msg.Payload()), " dengan topik ", msg.Topic())
+	//fmt.Println("Terima message")
 }
 
 func main() {
@@ -33,27 +34,35 @@ func main() {
 
 	// Tangkap input dari user untuk menentukan program dijalankan sebagai publisher atau susbcriber
 	args := os.Args[1]
+	message := "Selamat pagi"
+	topic := "/hello"
+
+	if len(os.Args) > 2 {
+		topic = os.Args[2]
+	}
+	if len(os.Args) > 3 {
+		message = os.Args[3]
+	}
 	if args == "pub" {
-		pub(client)
+		pub(client, topic, message)
 	} else if args == "sub" {
-		sub(client)
+		sub(client, topic)
 		// Block program agar tidak exit setelah subscribe berhasil
 		<-(chan int)(nil)
 	}
 }
 
-func sub(client mqtt.Client) {
+func sub(client mqtt.Client, topic string) {
 	// Variabel topik message
-	topic := "/hello"
 	// Subscribe dengan topik tertentu dan QoS Level 1
 	token := client.Subscribe(topic, 1, nil)
-	fmt.Println("Berhasil subscribe")
+	fmt.Println("Berhasil subscribe :", topic)
 	// Menunggu susbcribe berhasil
 	token.Wait()
 }
 
-func pub(client mqtt.Client) {
-	topic := "/hello"
-	message := "Selamat pagi"
-	client.Publish(topic, 1, false, message)
+func pub(client mqtt.Client, topic string, message string) {
+	fmt.Println("Publish message :", message, "topic :", topic)
+	token := client.Publish(topic, 1, false, message)
+	token.Wait()
 }
